@@ -87,7 +87,6 @@ class AddContact extends React.Component<IProps, IState> {
         apellido: this.state.lastname,
         telefono: this.state.phone,
       };
-      console.log(JSON.stringify(data));
       fetch("https://www.raydelto.org/agenda.php", {
         method: "POST",
         body: JSON.stringify(data),
