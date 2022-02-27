@@ -47,6 +47,8 @@ interface IState {
   phone: string;
   error: [];
   openModal: boolean;
+  modalTitle: string;
+  modalContent: string;
 }
 
 class AddContact extends React.Component<IProps, IState> {
@@ -57,6 +59,8 @@ class AddContact extends React.Component<IProps, IState> {
       lastname: "",
       phone: "",
       openModal: false,
+      modalTitle: "",
+      modalContent: "",
       error: [],
     };
   }
@@ -73,6 +77,8 @@ class AddContact extends React.Component<IProps, IState> {
       this.state.phone.length === 0
     ) {
       this.setState({
+        modalTitle: "An error has been occur! 😲",
+        modalContent: "Please, fill out all inputs",
         openModal: true,
       });
     } else {
@@ -84,20 +90,26 @@ class AddContact extends React.Component<IProps, IState> {
       console.log(JSON.stringify(data));
       fetch("https://www.raydelto.org/agenda.php", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Credentials": "true",
-          "Access-Control-Allow-Methods": "POST",
-          "Origin": "X-Requested-With",
-          "Accept": "Authorization"
-        },
         body: JSON.stringify(data),
       }).then((response) => {
         if (response.ok) {
-          alert("Good!");
+          this.setState({
+            modalTitle: "The contact was saved! 👌",
+            modalContent: "The contact has been saved succesfully!",
+            openModal: true,
+            firstname: "",
+            lastname: "",
+            phone: ""
+          });
         } else {
-          alert("Not Good");
+            this.setState({
+                modalTitle: "Ooop! Error  😭",
+                modalContent: "An error has been occur, please try again.",
+                openModal: true,
+                firstname: "",
+                lastname: "",
+                phone: ""
+              });
         }
       });
     }
@@ -114,8 +126,8 @@ class AddContact extends React.Component<IProps, IState> {
             BackdropComponent={Backdrop}
           >
             <Box sx={style}>
-              <h2 id="unstyled-modal-title">An error has been occur! 😲</h2>
-              <p id="unstyled-modal-description">Please, fill out all inputs</p>
+              <h2 id="unstyled-modal-title">{this.state.modalTitle}</h2>
+              <p id="unstyled-modal-description">{this.state.modalContent}</p>
             </Box>
           </StyledModal>
         </div>
@@ -132,17 +144,20 @@ class AddContact extends React.Component<IProps, IState> {
             <TextField
               onChange={(e) => this.setState({ firstname: e.target.value })}
               name="firstname"
+              value={this.state.firstname}
               label="First Name"
               variant="outlined"
             />
             <TextField
               onChange={(e) => this.setState({ lastname: e.target.value })}
+              value={this.state.lastname}
               name="lastname"
               label="Last Name"
               variant="outlined"
             />
             <TextField
               onChange={(e) => this.setState({ phone: e.target.value })}
+              value={this.state.phone}
               name="phone"
               label="Phone"
               variant="outlined"
