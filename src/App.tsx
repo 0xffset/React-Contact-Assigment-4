@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import Contact from './components/Contact';
+import Contact from './components/ListContact';
 import AddContact from './components/AddContact';
 function App() {
   return (
