@@ -89,7 +89,7 @@ class AddContact extends React.Component<IProps, IState> {
         telefono: this.state.phone,
       };
       console.log(JSON.stringify(data));
-      fetch("http://www.raydelto.org/agenda.php", {
+      fetch("https://www.raydelto.org/agenda.php", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
