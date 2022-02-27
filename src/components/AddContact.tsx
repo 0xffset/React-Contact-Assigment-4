@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import * as React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
@@ -47,6 +48,7 @@ interface IState {
   error: [];
   openModal: boolean;
 }
+
 class AddContact extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
@@ -63,16 +65,7 @@ class AddContact extends React.Component<IProps, IState> {
       openModal: false,
     });
   };
-  //   const PostData = async (): Promise<void> => {
-  //     const reponse  = await fetch("https://www.raydelto.org/agenda.php", {
-  //         method: 'POST',
-  //         mode: 'cors',
-  //         headers: {
-  //             'Content-Type': 'application/json'
-  //           },
-  //           body: JSON.stringify(data)
-  //     })
-  //   }
+
   onSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (
       this.state.firstname.length === 0 ||
@@ -93,8 +86,11 @@ class AddContact extends React.Component<IProps, IState> {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "accept": "application/json",
           "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Credentials": "true",
+          "Access-Control-Allow-Methods": "POST",
+          "Origin": "X-Requested-With",
+          "Accept": "Authorization"
         },
         body: JSON.stringify(data),
       }).then((response) => {
@@ -106,12 +102,6 @@ class AddContact extends React.Component<IProps, IState> {
       });
     }
   };
-  onChange = (e: React.ChangeEvent<HTMLInputElement>): void =>
-    this.setState({
-      firstname: e.target.value,
-      lastname: e.target.value,
-      phone: e.target.value,
-    });
   render(): React.ReactNode {
     return (
       <>
@@ -140,13 +130,23 @@ class AddContact extends React.Component<IProps, IState> {
             autoComplete="off"
           >
             <TextField
-              onChange={this.onChange}
+              onChange={(e) => this.setState({ firstname: e.target.value })}
               name="firstname"
               label="First Name"
               variant="outlined"
             />
-            <TextField name="lastname" label="Last Name" variant="outlined" />
-            <TextField name="phone" label="Phone" variant="outlined" />
+            <TextField
+              onChange={(e) => this.setState({ lastname: e.target.value })}
+              name="lastname"
+              label="Last Name"
+              variant="outlined"
+            />
+            <TextField
+              onChange={(e) => this.setState({ phone: e.target.value })}
+              name="phone"
+              label="Phone"
+              variant="outlined"
+            />
             <Button onClick={this.onSubmit} variant="outlined" size="large">
               Submit
             </Button>
